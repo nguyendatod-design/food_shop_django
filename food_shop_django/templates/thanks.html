@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Cảm ơn - Food Shop{% endblock %}
+
+{% block content %}
+    <h1 class="page-title">Cảm ơn bạn!</h1>
+
+    <div class="card">
+        <div class="thanks">
+            <div class="thanks__title">Đơn hàng đã được tạo.</div>
+            <div class="thanks__meta">
+                Mã đơn: <strong>#{{ order.id }}</strong><br />
+                Trạng thái: <strong>{{ order.get_status_display }}</strong><br />
+                Thời gian: <strong>{{ order.created_at }}</strong>
+            </div>
+
+            <div class="thanks__total">
+                Tổng tiền: <span class="money">{{ order.total|floatformat:0 }} đ</span>
+            </div>
+
+            <div class="thanks__items-title">Chi tiết:</div>
+            <ul class="list">
+                {% for it in order.items.all %}
+                    <li class="list__item">
+                        {{ it.product_name }} x{{ it.quantity }} - {{ it.line_total|floatformat:0 }} đ
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <div class="thanks__actions">
+                <a class="btn" href="{% url 'index' %}">Quay lại menu</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Thanh toán - Food Shop{% endblock %}
+
+{% block content %}
+    <h1 class="page-title">Thanh toán</h1>
+
+    <div class="card card--form">
+        <h2 class="card-title">Thông tin đơn hàng</h2>
+
+        {% if error %}
+            <div class="alert alert--error">{{ error }}</div>
+        {% endif %}
+
+        <form method="post" class="form">
+            {% csrf_token %}
+            <div class="form__grid">
+                <label class="label">
+                    Họ tên
+                    <input class="input" type="text" name="name" placeholder="Nguyễn Văn A" required />
+                </label>
+                <label class="label">
+                    Số điện thoại
+                    <input class="input" type="text" name="phone" placeholder="0123 456 789" />
+                </label>
+            </div>
+
+            <label class="label">
+                Địa chỉ nhận hàng
+                <textarea class="input input--textarea" name="address" placeholder="Số nhà, đường, phường/xã..." required></textarea>
+            </label>
+
+            <label class="label">
+                Ghi chú (tùy chọn)
+                <textarea class="input input--textarea" name="notes" placeholder="Ví dụ: Không hành, giao giờ 5h..."></textarea>
+            </label>
+
+            <div class="checkout-summary">
+                <div class="checkout-summary__total">
+                    Tổng tiền: <span class="money">{{ total|floatformat:0 }} đ</span>
+                </div>
+                <div class="checkout-summary__items">
+                    <div class="checkout-summary__items-title">Các món</div>
+                    <ul class="list">
+                        {% for it in cart_items %}
+                            <li class="list__item">
+                                {{ it.name }} x{{ it.qty }} - {{ it.line_total|floatformat:0 }} đ
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <button class="btn btn--primary" type="submit">Đặt hàng</button>
+        </form>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Menu - Food Shop{% endblock %}
+
+{% block content %}
+    <h1 class="page-title">Menu</h1>
+
+    {% for category, items in menu_by_category.items %}
+        <section class="card card--section">
+            <h2 class="section-title">{{ category }}</h2>
+            <div class="grid">
+                {% for item in items %}
+                    <div class="menu-item">
+                        {% if item.image %}
+                            <img class="menu-item__img" src="{{ item.image.url }}" alt="{{ item.name }}" loading="lazy" />
+                        {% else %}
+                            <img class="menu-item__img" src="https://via.placeholder.com/600x400?text=Food" alt="{{ item.name }}" loading="lazy" />
+                        {% endif %}
+                        <div class="menu-item__top">
+                            <div>
+                                <div class="menu-item__name">{{ item.name }}</div>
+                                <div class="menu-item__desc">{{ item.desc }}</div>
+                            </div>
+                            <div class="menu-item__price">{{ item.price|floatformat:0 }} đ</div>
+                        </div>
+
+                        <form class="menu-item__actions" method="post" action="{% url 'cart_add' item.id %}">
+                            {% csrf_token %}
+                            <label class="label">
+                                Số lượng:
+                                <input class="input" type="number" name="qty" value="1" min="1" max="10" />
+                            </label>
+                            <button class="btn" type="submit">Thêm</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    {% endfor %}
+{% endblock %}
+

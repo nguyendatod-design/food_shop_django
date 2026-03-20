@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Giỏ hàng - Food Shop{% endblock %}
+
+{% block content %}
+    <h1 class="page-title">Giỏ hàng</h1>
+
+    {% if not cart_items %}
+        <div class="empty">
+            Giỏ hàng của bạn đang trống.
+            <div class="empty__actions">
+                <a class="btn btn--secondary" href="{% url 'index' %}">Xem menu</a>
+            </div>
+        </div>
+    {% else %}
+        <div class="card">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Món</th>
+                        <th>Đơn giá</th>
+                        <th>Số lượng</th>
+                        <th>Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for it in cart_items %}
+                        <tr>
+                            <td>{{ it.name }}</td>
+                            <td>{{ it.price|floatformat:0 }} đ</td>
+                            <td class="table__qty">
+                                <form method="post" action="{% url 'cart_update' it.id %}">
+                                    {% csrf_token %}
+                                    <input class="input input--qty" type="number" name="qty" value="{{ it.qty }}" min="0" max="20" />
+                                    <button class="btn btn--tiny" type="submit">Cập nhật</button>
+                                </form>
+                            </td>
+                            <td>{{ it.line_total|floatformat:0 }} đ</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="cart-summary">
+                <div class="cart-summary__total">
+                    Tổng: <span class="money">{{ total|floatformat:0 }} đ</span>
+                </div>
+                <div class="cart-summary__actions">
+                    <form method="post" action="{% url 'cart_clear' %}">
+                        {% csrf_token %}
+                        <button class="btn btn--secondary" type="submit">Xóa giỏ</button>
+                    </form>
+                    <a class="btn" href="{% url 'checkout' %}">Đặt hàng</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+

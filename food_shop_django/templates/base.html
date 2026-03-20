@@ -1,0 +1,30 @@
+{% load static %}
+<!doctype html>
+<html lang="vi">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{% block title %}Food Shop{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'styles.css' %}" />
+    </head>
+    <body>
+        <header class="header">
+            <div class="container header__inner">
+                <a class="brand" href="{% url 'index' %}">Food Shop</a>
+                <nav class="nav">
+                    <a class="nav__link" href="{% url 'index' %}">Menu</a>
+                    <a class="nav__link" href="{% url 'cart' %}">Giỏ hàng</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container">
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="footer">
+            <div class="container footer__inner">Demo web bán đồ ăn bằng Django.</div>
+        </footer>
+    </body>
+</html>
+
