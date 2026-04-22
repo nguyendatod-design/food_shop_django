@@ -21,6 +21,7 @@
                         <th>Đơn giá</th>
                         <th>Số lượng</th>
                         <th>Thành tiền</th>
+                        <th>Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,6 +37,12 @@
                                 </form>
                             </td>
                             <td>{{ it.line_total|floatformat:0 }} đ</td>
+                            <td class="table__actions">
+                                <form method="post" action="{% url 'cart_remove' it.id %}">
+                                    {% csrf_token %}
+                                    <button class="btn btn--tiny btn--secondary" type="submit">Xóa</button>
+                                </form>
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Đăng nhập - Food Shop{% endblock %}
+
+{% block content %}
+    <h1 class="page-title">Đăng nhập</h1>
+
+    <div class="card card--form">
+        {% if error %}
+            <div class="alert alert--error">{{ error }}</div>
+        {% endif %}
+
+        <form method="post" class="form" action="{% url 'login' %}">
+            {% csrf_token %}
+            {% if request.GET.next %}
+                <input type="hidden" name="next" value="{{ request.GET.next }}" />
+            {% endif %}
+
+            <label class="label">
+                Tên đăng nhập
+                <input class="input" type="text" name="username" autocomplete="username" required />
+            </label>
+
+            <label class="label">
+                Mật khẩu
+                <input class="input" type="password" name="password" autocomplete="current-password" required />
+            </label>
+
+            <button class="btn btn--primary" type="submit">Đăng nhập</button>
+        </form>
+
+        <p class="form-footer">
+            Chưa có tài khoản?
+            <a href="{% url 'register' %}">Đăng ký</a>
+        </p>
+    </div>
+{% endblock %}

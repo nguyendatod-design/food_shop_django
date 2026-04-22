@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} - Food Shop{% endblock %}
+
+{% block content %}
+    <h1 class="page-title">{{ product.name }}</h1>
+
+    <div class="card product-detail">
+        {% if product.image %}
+            <img class="product-detail__img" src="{{ product.image.url }}" alt="{{ product.name }}" />
+        {% endif %}
+
+        <div class="product-detail__info">
+            <div class="product-detail__price">{{ product.price|floatformat:0 }} đ</div>
+            <div class="product-detail__desc">{{ product.desc }}</div>
+
+            <form method="post" class="product-detail__form">
+                {% csrf_token %}
+                <label class="label">
+                    Số lượng
+                    <input class="input" type="number" name="qty" value="1" min="1" max="10" />
+                </label>
+                <button class="btn btn--primary" type="submit">Thêm vào giỏ</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+

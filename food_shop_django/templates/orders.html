@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Đơn hàng - Food Shop{% endblock %}
+
+{% block content %}
+    <h1 class="page-title">Đơn hàng của bạn</h1>
+
+    {% if not orders %}
+        <div class="empty">
+            Bạn chưa có đơn hàng nào.
+            <div class="empty__actions">
+                <a class="btn btn--secondary" href="{% url 'index' %}">Xem menu</a>
+            </div>
+        </div>
+    {% else %}
+        <div class="card">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Mã</th>
+                        <th>Thời gian</th>
+                        <th>Trạng thái</th>
+                        <th>Tổng</th>
+                        <th>Chi tiết</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for o in orders %}
+                        <tr>
+                            <td>#{{ o.id }}</td>
+                            <td>{{ o.created_at }}</td>
+                            <td>{{ o.get_status_display }}</td>
+                            <td>{{ o.total|floatformat:0 }} đ</td>
+                            <td>
+                                <a class="btn btn--tiny btn--secondary" href="{% url 'thanks' o.id %}">Xem</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endblock %}
+

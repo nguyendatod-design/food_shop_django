@@ -5,6 +5,40 @@
 {% block content %}
     <h1 class="page-title">Menu</h1>
 
+    <form class="search" method="get">
+        <div class="search__grid">
+            <label class="label">
+                Tìm kiếm
+                <input class="input" type="text" name="q" value="{{ q }}" placeholder="Ví dụ: phở, trà đào, kem..." />
+            </label>
+
+            <label class="label">
+                Danh mục
+                <select class="input" name="category">
+                    <option value="all" {% if category == "all" %}selected{% endif %}>Tất cả</option>
+                    {% for c in categories %}
+                        <option value="{{ c }}" {% if category == c %}selected{% endif %}>{{ c }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            <label class="label">
+                Sắp xếp
+                <select class="input" name="sort">
+                    <option value="new" {% if sort == "new" %}selected{% endif %}>Mới nhất</option>
+                    <option value="price_asc" {% if sort == "price_asc" %}selected{% endif %}>Giá tăng</option>
+                    <option value="price_desc" {% if sort == "price_desc" %}selected{% endif %}>Giá giảm</option>
+                    <option value="name_asc" {% if sort == "name_asc" %}selected{% endif %}>Tên A-Z</option>
+                </select>
+            </label>
+        </div>
+
+        <div class="search__actions">
+            <button class="btn btn--primary" type="submit">Lọc</button>
+            <a class="btn btn--secondary" href="{% url 'index' %}">Reset</a>
+        </div>
+    </form>
+
     {% for category, items in menu_by_category.items %}
         <section class="card card--section">
             <h2 class="section-title">{{ category }}</h2>
@@ -32,6 +66,8 @@
                             </label>
                             <button class="btn" type="submit">Thêm</button>
                         </form>
+
+                        <a class="btn btn--secondary menu-item__detail" href="{% url 'product_detail' item.id %}">Xem chi tiết</a>
                     </div>
                 {% endfor %}
             </div>

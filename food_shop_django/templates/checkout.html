@@ -14,31 +14,47 @@
 
         <form method="post" class="form">
             {% csrf_token %}
+            {% if user.is_authenticated %}
+                <p class="checkout-hint">Đang đặt hàng với tài khoản <strong>{{ user.username }}</strong>. Thông tin bên dưới được điền sẵn và sẽ được lưu cho lần sau.</p>
+            {% else %}
+                <p class="checkout-hint"><a href="{% url 'login' %}?next={% url 'checkout' %}">Đăng nhập</a> để lưu đơn và điền nhanh thông tin giao hàng.</p>
+            {% endif %}
             <div class="form__grid">
                 <label class="label">
                     Họ tên
-                    <input class="input" type="text" name="name" placeholder="Nguyễn Văn A" required />
+                    <input class="input" type="text" name="name" placeholder="Nguyễn Văn A" required value="{{ billing.name }}" />
                 </label>
                 <label class="label">
                     Số điện thoại
-                    <input class="input" type="text" name="phone" placeholder="0123 456 789" />
+                    <input class="input" type="text" name="phone" placeholder="0123 456 789" value="{{ billing.phone }}" />
                 </label>
             </div>
 
             <label class="label">
                 Địa chỉ nhận hàng
-                <textarea class="input input--textarea" name="address" placeholder="Số nhà, đường, phường/xã..." required></textarea>
+                <textarea class="input input--textarea" name="address" placeholder="Số nhà, đường, phường/xã..." required>{{ billing.address }}</textarea>
             </label>
 
             <label class="label">
                 Ghi chú (tùy chọn)
-                <textarea class="input input--textarea" name="notes" placeholder="Ví dụ: Không hành, giao giờ 5h..."></textarea>
+                <textarea class="input input--textarea" name="notes" placeholder="Ví dụ: Không hành, giao giờ 5h...">{{ billing.notes }}</textarea>
+            </label>
+
+            <label class="label">
+                Mã giảm giá (nếu có)
+                <input class="input" type="text" name="promo_code" placeholder="VD: FOOD10" value="{% if billing.promo_code %}{{ billing.promo_code }}{% else %}{{ discount_code }}{% endif %}" />
             </label>
 
             <div class="checkout-summary">
                 <div class="checkout-summary__total">
                     Tổng tiền: <span class="money">{{ total|floatformat:0 }} đ</span>
                 </div>
+                <div class="checkout-summary__items-title">Tạm tính: {{ subtotal|floatformat:0 }} đ</div>
+                {% if discount_amount and discount_amount > 0 %}
+                    <div class="checkout-summary__items-title" style="margin-top: 6px; color: #e11d48;">
+                        Giảm giá ({{ discount_code }}): -{{ discount_amount|floatformat:0 }} đ
+                    </div>
+                {% endif %}
                 <div class="checkout-summary__items">
                     <div class="checkout-summary__items-title">Các món</div>
                     <ul class="list">

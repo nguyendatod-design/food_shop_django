@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Đăng ký - Food Shop{% endblock %}
+
+{% block content %}
+    <h1 class="page-title">Đăng ký</h1>
+
+    <div class="card card--form">
+        <form method="post" class="form" action="{% url 'register' %}">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="alert alert--error">{{ form.non_field_errors }}</div>
+{% endif %}
+
+            <div class="form__grid">
+                <label class="label">
+                    {{ form.last_name.label }}
+                    {{ form.last_name }}
+                    {% if form.last_name.errors %}<span class="field-error">{{ form.last_name.errors.0 }}</span>{% endif %}
+                </label>
+                <label class="label">
+                    {{ form.first_name.label }}
+                    {{ form.first_name }}
+                    {% if form.first_name.errors %}<span class="field-error">{{ form.first_name.errors.0 }}</span>{% endif %}
+                </label>
+            </div>
+
+            <label class="label">
+                {{ form.username.label }}
+                {{ form.username }}
+                {% if form.username.errors %}<span class="field-error">{{ form.username.errors.0 }}</span>{% endif %}
+            </label>
+
+            <label class="label">
+                {{ form.email.label }}
+                {{ form.email }}
+                {% if form.email.errors %}<span class="field-error">{{ form.email.errors.0 }}</span>{% endif %}
+            </label>
+
+            <label class="label">
+                {{ form.password1.label }}
+                {{ form.password1 }}
+                {% if form.password1.errors %}<span class="field-error">{{ form.password1.errors.0 }}</span>{% endif %}
+            </label>
+
+            <label class="label">
+                {{ form.password2.label }}
+                {{ form.password2 }}
+                {% if form.password2.errors %}<span class="field-error">{{ form.password2.errors.0 }}</span>{% endif %}
+            </label>
+
+            <button class="btn btn--primary" type="submit">Tạo tài khoản</button>
+</form>
+
+        <p class="form-footer">
+            Đã có tài khoản?
+            <a href="{% url 'login' %}">Đăng nhập</a>
+        </p>
+    </div>
+{% endblock %}

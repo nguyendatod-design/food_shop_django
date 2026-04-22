@@ -18,6 +18,15 @@
                 Tổng tiền: <span class="money">{{ order.total|floatformat:0 }} đ</span>
             </div>
 
+            {% if order.discount_amount and order.discount_amount > 0 %}
+                <div class="thanks__meta" style="margin-top: 6px;">
+                    Giảm giá ({{ order.discount_code }}): <span class="money">-{{ order.discount_amount|floatformat:0 }} đ</span>
+                </div>
+                <div class="thanks__meta">
+                    Tạm tính: {{ order.subtotal|floatformat:0 }} đ
+                </div>
+            {% endif %}
+
             <div class="thanks__items-title">Chi tiết:</div>
             <ul class="list">
                 {% for it in order.items.all %}
